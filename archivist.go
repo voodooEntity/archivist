@@ -40,7 +40,7 @@ func Init(logLevel string, logTarget string, arg ...string) {
 				}
 				logger.SetOutput(file)
 			} else {
-				file, err := os.Open(logPath) // For read access.
+				file, err := os.OpenFile(logPath, os.O_APPEND|os.O_RDWR, 0644) // For read access.
 				if nil != err {
 					Error("Cannot open specified LOG_FILE", logPath)
 				} else {
