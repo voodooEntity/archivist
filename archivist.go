@@ -64,7 +64,7 @@ func Init(logLevel string, logTarget string, arg ...string) {
 	}
 }
 
-func store(message string, stype string, dump bool, formatted bool, params ...interface{}) {
+func store(message string, stype string, dump bool, formatted bool, params []interface{}) {
 	// dispatch the caller file+line number
 	_, file, line, _ := runtime.Caller(2)
 	// - - - - - - - - - - - - - - - - - - - - - - -
@@ -79,7 +79,7 @@ func store(message string, stype string, dump bool, formatted bool, params ...in
 	logLine := time.Now().Format("2006-01-02 15:04:05") + "|" + stype + "|" + packageFile + "#" + strconv.Itoa(line) + "|"
 	if true == dump {
 		if true == formatted {
-			logLine = logLine + fmt.Sprintf(message, params)
+			logLine = logLine + fmt.Sprintf(message, params...)
 		} else {
 			logLine = logLine + message + "|" + fmt.Sprintf("%+v", params)
 		}
@@ -95,7 +95,7 @@ func Error(message string, params ...interface{}) {
 	// 3 = "error"
 	if logFlags[3] {
 		if 0 == len(params) {
-			store(message, "error", false, false, "")
+			store(message, "error", false, false, nil)
 		} else {
 			store(message, "error", true, false, params)
 		}
@@ -113,7 +113,7 @@ func Fatal(message string, params ...interface{}) {
 	// 4 = "fatal"
 	if logFlags[4] {
 		if 0 == len(params) {
-			store(message, "fatal", false, false, "")
+			store(message, "fatal", false, false, nil)
 		} else {
 			store(message, "fatal", true, false, params)
 		}
@@ -131,7 +131,7 @@ func Info(message string, params ...interface{}) {
 	// 1 == "info"
 	if logFlags[1] {
 		if 0 == len(params) {
-			store(message, "info", false, false, "")
+			store(message, "info", false, false, nil)
 		} else {
 			store(message, "info", true, false, params)
 		}
@@ -149,7 +149,7 @@ func Warning(message string, params ...interface{}) {
 	// 2 = "warning"
 	if logFlags[2] {
 		if 0 == len(params) {
-			store(message, "warning", false, false, "")
+			store(message, "warning", false, false, nil)
 		} else {
 			store(message, "warning", true, false, params)
 		}
@@ -167,7 +167,7 @@ func Debug(message string, params ...interface{}) {
 	// 0 = "debug"
 	if logFlags[0] {
 		if 0 == len(params) {
-			store(message, "debug", false, false, "")
+			store(message, "debug", false, false, nil)
 		} else {
 			store(message, "debug", true, false, params)
 		}
